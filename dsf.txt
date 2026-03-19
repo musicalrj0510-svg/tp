@@ -1,0 +1,150 @@
+========================================
+Practical No. 1
+======================================= 
+ install.packages("party")
+library(party)
+
+ 
+model <- ctree(Species ~ ., data = iris)
+
+ 
+plot(model, type = "simple") 
+plot(model)                   
+
+
+========================================
+Practical No. 2
+========================================
+ 
+install.packages("wordcloud")
+install.packages("RColorBrewer")
+
+ 
+library(wordcloud)
+library(RColorBrewer)
+
+ 
+words <- c("data","science","mining","analysis","machine","learning",
+           "text","widely","interdisciplinary","used","programming",
+           "important","field","part")
+
+freq <- c(10,6,6,4,4,4,3,3,3,3,3,2,2)
+ 
+wordcloud(words, freq,
+          col = brewer.pal(8, "Dark2"),
+          random.order = FALSE)
+
+
+========================================
+Practical No. 3
+========================================
+ 
+data <- c(10, 15, 20, 25, 30, 35, 40, 45, 50)
+
+ 
+boxplot(data, col="lightgreen", main="Boxplot of data")
+
+ 
+hist(data, col="lightblue", main="Histogram of data", xlab="values")
+
+
+========================================
+Practical No. 4
+========================================
+ 
+hours  <- c(1, 2, 3, 4, 5)
+scores <- c(50, 55, 65, 70, 75)
+ 
+plot(hours, scores, main="Linear Regression Example",
+     xlab="Study Hours", ylab="Scores")
+
+ 
+model <- lm(scores ~ hours)
+
+ 
+abline(model, col="blue")
+
+
+========================================
+Practical No. 5
+========================================
+ 
+df <- as.data.frame(Titanic)
+
+ 
+titanic.raw <- df[rep(row.names(df), df$Freq), 1:4]
+
+ 
+dim(titanic.raw)        
+str(titanic.raw)       
+head(titanic.raw)       
+summary(titanic.raw)    
+
+
+========================================
+Practical No. 6
+=======================================data(iris)
+plot(iris$Sepal.Length,iris$Sepal.Width,col=as.numeric(iris$Species),pch=1,xlab="Sepal.Length",ylab="Sepal.Width")
+ct<-aggregate(cbind(Sepal.Length,Sepal.Width)~Species,data=iris,FUN=mean)
+points(ct$Sepal.Length,ct$Sepal.Width,col=as.numeric(ct$Species),pch=8,cex=2,lwd=2)
+
+========================================
+Practical No. 7
+========================================
+ 
+plot(AirPassengers, main="AirPassengers", ylab="Passengers")
+
+ 
+months <- month.abb
+values <- c(-25,-35,-5,-10,-5,35,65,65,15,-20,-55,-30)
+
+plot(values, type="o", xaxt="n", xlab="Month", ylab="Value")
+axis(1, at=1:12, labels=months)
+
+ 
+ts_data <- AirPassengers
+plot(ts_data)
+
+ 
+model <- HoltWinters(ts_data)
+pred  <- predict(model, n.ahead=12)
+
+lines(pred, col="blue", lty=2)
+
+
+========================================
+Practical No. 8
+========================================
+library(recommenderlab)
+
+ratings_matrix <- matrix(c(
+  5, NA, 3, 1,
+  4,  2, NA, 1,
+  1,  2, 3, 5,
+  NA, 3, 4, 4
+), nrow = 4, byrow = TRUE)
+
+colnames(ratings_matrix) <- c("Item1", "Item2", "Item3", "Item4")
+rownames(ratings_matrix) <- c("User1", "User2", "User3", "User4")
+
+ratings          <- as(ratings_matrix, "realRatingMatrix")
+rec_model        <- Recommender(ratings, method = "UBCF")
+recommendations  <- predict(rec_model, ratings, n = 2)
+recommended_items <- as(recommendations, "list")
+print(recommended_items)
+
+
+========================================
+Practical No. 9
+========================================
+library(isotree)
+
+data <- data.frame(
+  transactions = c(100, 120, 130, 150, 170, 200, 500, 210, 220, 230)
+)
+
+model <- isolation.forest(data)
+
+data$anomaly_score <- predict(model, data, type = "score")
+data$anomaly <- ifelse(data$anomaly_score > 0.6, "Anomaly", "Normal")
+print(data)
